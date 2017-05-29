@@ -45,6 +45,19 @@
 				</button>
 			</div>
 		</div>
+		
+		
+	  <!-- Modal Structure -->
+	  <div id="modal1" class="modal">
+		<div class="modal-content">
+		  <h4>Resultado</h4>
+		  <p id="modal_response"></p>
+		</div>
+		<div class="modal-footer">
+		  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+		</div>
+	  </div>
+		
     </form>
 <script>
    
@@ -70,11 +83,27 @@
 	function postOC(){
 		
 		var process = function(response){
-			console.log(response);
+			if(response && response.hasOwnProperty("status")  && response.status == "success"){
+				$('#modal_response').html(response.message);
+				$('#modal1').modal('open');
+			}else{
+				if(response && response.hasOwnProperty("status") && response.status=="error"){
+					$('#modal_response').html(response.message);
+					$('#modal1').modal('open');
+				}else{
+					$('#modal_response').html("Ocurrió un error");
+					$('#modal1').modal('open');
+				}
+			}
 		}
 		
 		postAPI('<?php echo base_url();?>index.php/main_controller/postOC',process, objectifyForm($('#formulario_oc').serializeArray()));
 	}
+	
+	$(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+  });
   
   </script>
   </div>
