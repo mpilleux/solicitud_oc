@@ -73,7 +73,7 @@
 			console.log(response);
 		}
 		
-		postAPI('<?php echo base_url();?>main_controller/postOC',process, objectifyForm($('#formulario_oc').serializeArray()));
+		postAPI('<?php echo base_url();?>index.php/main_controller/postOC',process, objectifyForm($('#formulario_oc').serializeArray()));
 	}
   
   </script>
