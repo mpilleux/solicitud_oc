@@ -1,0 +1,497 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<link rel="stylesheet"
+	href="<?php echo base_url();?>resources/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="<?php echo base_url();?>resources/styles/estilo.css">
+<script type="text/javascript"
+	src="<?php echo base_url();?>resources/scripts/jquery/jquery-3.1.0.min.js"></script>
+<script type="text/javascript"
+	src="<?php echo base_url();?>resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="<?php echo base_url();?>resources/scripts/handlebars/handlebars.min-latest.js"></script>
+<script type="text/javascript"
+	src="<?php echo base_url();?>resources/scripts/app/getAPI.js"></script>
+<script type="text/javascript"
+	src="<?php echo base_url();?>resources/scripts/app/formulario_genealog.js"></script>
+
+</head>
+
+<body>
+	<div class="container">
+		<br><br>
+		<div id="content" class="row">
+			<div class="col-xs-12 wrap">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="pic col-xs-1"></div>
+						<div class="name col-xs-6">
+							<h3>Nombre Snombre Apellido Sapellido</h3>
+						</div>
+						<div class="col-xs-2 col-xs-offset-3">
+							<i class="glyphicon glyphicon-minus" style="background-color: gray; color:white; padding: .5em;"></i>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-xs-12 info">
+						<div id="myElements" class="row">
+							<div id="createElementMenu" class="col-xs-12 info-element" >
+								
+
+							</div>
+						</div>
+						<!-- <div id="addElement" class="btn btn-default col-xs-12 info-element myHidden"> + </div> -->
+						
+
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="btn btn-warning" id="GENERATEFORM">GENERATE FORM</div>
+		<div id="previewShadow" >
+		</div>
+	</div>	
+	<div id="preview" class="fixedPreview">
+		<div>
+		</div>		
+	</div>
+	
+	
+
+	<!-- ELEMENT -->
+	<span id="elementTemplate" class="myHidden">
+
+		<div id="{{id}}" class="col-xs-12 info-element element" data-myId="{{id}}" data-generalId="{{generalId}}">
+			
+				<div class="col-xs-12 info-title">
+					<div class=" col-xs-10 col-xs-offset-1"><h5>{{title}}</h5></div>
+					<div class="col-xs-1 deleteElement text-right">
+						<i class="glyphicon glyphicon-minus btn btn-danger "></i>
+					</div>
+				</div>
+			
+			<div id="components_{{generalId}}" class=" info-content components">	
+				<div id="addComponentMenu_{{generalId}}" class="col-xs-12 addComponentMenu" >
+				
+				</div>
+			</div>
+			
+		</div>
+	</span>
+
+	<!--  COMPONENT -->
+	<span id="componentTemplate" class="myHidden">
+		<div id="{{id}}" class=" info-component component col-xs-12">
+			<div class="col-sm-1">
+				{{title}}
+			</div>
+			<div class=" col-xs-11">
+
+				<form id="form_{{id}}"  class="form-horizontal formComponent"  >
+					<div id="fields_{{id}}" class="fields col-xs-12">
+
+					</div>
+					<div id="tab_{{id}}" class="tab-content collapse" aria-expanded="false"  >
+					</div>
+
+					
+					<div class="btn btn-warning generateJson" >Generar Json</div>
+				</form>
+			</div>	
+		</div>
+	</span>
+	
+	<!-- BUTTON CREATE ELEMENT -->
+	<span id="createElementBtnTemplate" class="myHidden">
+		<button class = "createElementBtn col-xs-2 btn btn-default" >{{text}}</button>
+	</span>
+	
+	<!-- BUTTON ADD COMPONENT -->
+	<span id="addComponentBtnTemplate" class="myHidden">
+			<button class="addComponentBtn col-xs-3 btn btn-default">{{text}}</button>
+		
+	</span>
+
+	<!-- FIELD LUGAR -->
+	<span id="fieldLugarTemplate" class="myHidden">
+
+		<div type="button" class="col-xs-{{size}} btnTabComponent" role="tab" data-toggle="tab" data-myId="{{id}}" href="#{{id}}_tab" aria-controls="{{id}}_tab">
+			<div>
+			    &#x25BC;
+			</div>
+			<div>
+				Lugar: 
+			</div>
+			<div class="exampleContainer">
+				<div class="innerGlow" ></div>
+				<span id="example_{{id}}" class="lugarExample example"></span>
+			</div>
+		</div>
+	</span>
+	
+	<!-- FIELD FECHA -->
+	<span id="fieldFechaTemplate" class="myHidden">
+
+		<div type="button" class="col-xs-{{size}} btnTabComponent" role="tab" data-toggle="tab" data-myId="{{id}}" href="#{{id}}_tab" aria-controls="{{id}}_tab">
+			<div>
+			    &#x25BC;
+			</div>
+			<div>
+				Fecha: 
+			</div>
+			<div class="exampleContainer">
+				<div class="innerGlow" ></div>
+				<span id="example_{{id}}" class="fechaExample example"></span>
+			</div>
+
+			
+		</div>
+	</span>
+
+
+	<!-- FIELD TEXT -->
+	<span id="fieldTextTemplate" class="myHidden">
+
+		<div class="col-xs-{{size}} fieldText" data-myId="{{id}}">
+
+			<input type="text" class="form-control" id="text_{{id}}" name="text_{{id}}" placeholder="{{placeholder}}">
+		</div>
+	</span>
+
+	<!-- FIELD FILE -->
+	<span id="fieldFileTemplate" class="myHidden">
+
+		<div type="button" class="col-xs-{{size}} btnTabComponent" role="tab" data-toggle="tab" data-myId="{{id}}" href="#tabFile_{{id}}" aria-controls="tabFile_{{id}}">
+			<div>
+			    &#x25BC;
+			</div>
+			<div>
+				Documento: 
+			</div>
+			<div class="exampleContainer">
+				<div class="innerGlow" ></div>
+				<span id="example_{{id}}" class=" example"></span>
+			</div>
+
+			
+		</div>
+	</span>
+
+	<!-- FIELD BAUTIZO -->
+	<span id="fieldBautizoTemplate" class="myHidden">
+		<div type="button" class="col-xs-{{size}} btnTabComponent" role="tab" data-toggle="tab" data-myId="{{id}}" href="#tabBautizo_{{id}}" aria-controls="tabBautizo_{{id}}">
+			<div>
+			    &#x25BC;
+			</div>
+			<div>
+				Bautizo: 
+			</div>
+			<div class="exampleContainer">
+				<div class="innerGlow" ></div>
+				<span id="example_{{id}}" class="example"></span>
+			</div>
+		</div>
+	</span>
+
+	<!-- FIELD DEFUNCION -->
+	<span id="fieldDefuncionTemplate" class="myHidden">
+		<div type="button" class="col-xs-{{size}} btnTabComponent" role="tab" data-toggle="tab" data-myId="{{id}}" href="#tabDefuncion_{{id}}" aria-controls="tabDefuncion_{{id}}">
+			<div>
+			    &#x25BC;
+			</div>
+			<div>
+				Defunci&oacute;n: 
+			</div>
+			<div class="exampleContainer">
+				<div class="innerGlow" ></div>
+				<span id="example_{{id}}" class="example"></span>
+			</div>
+		</div>
+	</span>
+
+	<!-- TABS -->
+
+	<!-- TAB LUGAR -->
+	<span id="tabLugarTemplate" class="myHidden">
+
+		<div class="tab-pane fade active form-group tabLugar lugar" role="tabpanel" data-myId="{{id}}"  id="{{id}}_tab">			
+
+			<!-- Collapse Lugar -->
+			<div class="col-xs-12">
+				<div class="well fieldsCollapse" >
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="{{id}}_pais">País</label>
+						<div class="col-xs-8">
+							<input type="text" class="form-control exampleUpdater _pais" id="{{id}}_pais" name="{{id}}_pais" placeholder="Chile">
+						</div>	
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="{{id}}_ciudad">Ciudad</label>
+						<div class="col-xs-8">
+							<input type="text" class="form-control exampleUpdater _ciudad" id="{{id}}_ciudad" name="{{id}}_ciudad" placeholder="Santiago">
+						</div>	
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="{{id}}_tipo">Tipo de Lugar</label>
+						<div class="col-xs-8">
+							<select type="text" class="form-control exampleUpdater _tipo" id="{{id}}_tipo" name="{{id}}_tipo" placeholder="">
+								<!-- TODO FILL SELECT LUGAR TYPES -->
+								<option value="">Seleccionar...</option>
+								<option value="Comuna">Comuna</option>
+								<option value="Hacienda">Hacienda</option>
+								<option value="Dirección">Direcci&oacute;n</option>
+							</select>
+						</div>	
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="{{id}}_valor">Lugar</label>
+						<div class="col-xs-8" style=" display:table-cell; vertical-align:middle; line-height: 200%;">
+							<input type="text" class="form-control exampleUpdater _valor" id="{{id}}_valor" name="{{id}}_valor" placeholder="">
+						</div>	
+					</div>
+
+					<div class="col-sm-offset-2 col-sm-10 formCollapseButton">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Limpiar</button>
+					</div>
+				</div>
+
+			</div>
+		</div> <!-- tab -->
+	</span>
+	
+	<!-- TAB FECHA -->
+	<span id="tabFechaTemplate" class="myHidden">
+		<div class="tab-pane fade form-group tabFecha fecha" role="tabpanel" data-myId="{{id}}" id="{{id}}_tab" >
+			<!-- Collapse Fecha -->
+			<div class="col-xs-12" >
+				<div class="well fieldsCollapse fieldsFecha col-sm-12" >
+					
+					<div class="form-group col-xs-6">
+						<label class="col-xs-3 col-sm-4" for="{{id}}_tipo_id">Tipo de Fecha</label>
+						<div class="col-xs-9 col-sm-8">
+							<select type="text" class="form-control _tipo_id" id="{{id}}_tipo_id" name="{{id}}_tipo_id" placeholder="">
+								<!-- TODO FILL SELECT LUGAR TYPES -->
+								<option value="normal">Normal: 05/06/1992</option>
+								<option value="ano">A&ntilde;o: 1992</option>
+								<option value="cercana">Cerca de 1992</option>
+								<option value="siglo">Siglo 20</option>
+								<option value="rangoNormal">Rango de Fecha: 01/07/1990 - 05/06/1992</option>
+								<option value="rangoAno">Rango de A&ntilde;o: 1990 - 1992</option>
+							</select>
+						</div>
+					</div>
+	
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 col-sm-3" for="{{id}}_dia-inicial">Fecha</label>
+						<div class="col-xs-2 fieldInputFecha">
+							<input type="text" class="form-control _dia-inicial" id="{{id}}_dia-inicial" name="{{id}}_dia-inicial" placeholder=""><span>/</span>
+						</div>
+						<div class="col-xs-2 fieldInputFecha">
+							<input type="text" class="form-control _mes-inicial" id="{{id}}_mes-inicial" name="{{id}}_mes-inicial" placeholder=""><span>/</span>
+						</div>
+						<div class="col-xs-3 fieldInputFecha">
+							<input type="text" class="form-control _ano-inicial" id="{{id}}_ano-inicial" name="{{id}}_ano-inicial" placeholder="">
+						</div>
+					</div>
+				
+				
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-8 col-xs-offset-4" for="{{id}}_no-estoy-seguro"><input id="{{id}}_no-estoy-seguro" type="checkbox" name="{{id}}_no-estoy-seguro" class="_no-estoy-seguro">No Estoy Seguro</label>
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 col-sm-3" for="{{id}}_dia-final">Fecha</label>
+						<div class="col-xs-2 fieldInputFecha">
+							<input type="text" class="form-control _dia-final" id="{{id}}_dia-final" name="{{id}}_dia-final" placeholder=""><span>/</span>
+						</div>
+						<div class="col-xs-2 fieldInputFecha">
+							<input type="text" class="form-control _mes-final" id="{{id}}_mes-final" name="{{id}}_mes-final" placeholder=""><span>/</span>
+						</div>
+						<div class="col-xs-3 fieldInputFecha">
+							<input type="text" class="form-control _ano-final" id="{{id}}_ano-final" name="{{id}}_ano-final" placeholder="">
+						</div>
+
+						
+					</div>
+					<div class="softHidden">
+						<input type="text" class="form-control exampleUpdater _output" id="{{id}}_output" name="{{id}}_output" placeholder="" value="">
+					</div>
+
+					<div class="col-sm-offset-2 col-sm-10 formCollapseButton">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Limpiar</button>
+					</div>
+					
+				</div>
+
+			</div><!--  -->
+		</div> <!--Tab -->
+	</span>
+	
+	<!-- TAB FILE -->
+	<span id="tabFileTemplate" class="myHidden">
+		<div class="tab-pane fade form-group tabFile" role="tabpanel" data-myId="{{id}}" id="tabFile_{{id}}" >
+			<!-- Collapse File -->
+			<div class="col-xs-12" >
+				<div class="well fieldsCollapse fieldsFile col-sm-12" >
+					
+					<div class="form-group col-xs-12">
+						<label class="col-xs-1 col-sm-2" for="file_{{id}}">File</label>
+						<div class="col-xs-6 fieldInputFile">
+							<input type="file" class="form-control file_" id="file_{{id}}" name="file_{{id}}" placeholder=""><span>/</span>
+						</div>
+					</div>		
+					<div class="form-group col-xs-12">
+						<div class="col-xs-offset-1 col-sm-offset-2 col-sm-10">
+							<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Limpiar</button>
+						</div>
+					</div>
+					
+				</div>
+
+			</div><!--  -->
+		</div> <!--Tab -->
+	</span>
+	
+	<!-- TAB BAUTIZO -->
+	<span id="tabBautizoTemplate" class="myHidden">
+
+		<div class="tab-pane fade active form-group tabBautizo" role="tabpanel" data-myId="{{id}}"  id="tabBautizo_{{id}}">			
+
+			<!-- Collapse Bautizo -->
+			<div class="col-xs-12">
+				<div class="well fieldsCollapse" >
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="bautizoPadrino_{{id}}">Padrino(s)</label>
+						<div class="col-xs-8">
+							<input type="text" class="form-control exampleUpdater" id="bautizoPadrino_{{id}}" name="bautizoPadrino_{{id}}">
+						</div>	
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="bautizoMadrina_{{id}}">Madrina(s)</label>
+						<div class="col-xs-8">
+							<input type="text" class="form-control exampleUpdater" id="bautizoMadrina_{{id}}" name="bautizoMadrina_{{id}}">
+						</div>	
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="bautizoRegistro_{{id}}">Registro Bautizo</label>
+						<div class="col-xs-8" style=" display:table-cell; vertical-align:middle; line-height: 200%;">
+							<input type="text" class="form-control exampleUpdater" id="bautizoRegistro_{{id}}" name="bautizoRegistro_{{id}}">
+						</div>	
+					</div>
+					<div class="form-group col-xs-6" style="max-height: none;">
+						<label class="col-xs-4 control-label" for="bautizoComentario_{{id}}">Comentario</label>
+						<div class="col-xs-8" style=" display:table-cell; vertical-align:middle; line-height: 200%;">
+							<textarea class="form-control exampleUpdater" id="bautizoComentario_{{id}}" name="bautizoComentario_{{id}}" rows="3"></textarea>
+						</div>	
+					</div>
+
+					<div class="col-sm-offset-2 col-sm-10 formCollapseButton">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Limpiar</button>
+					</div>
+				</div>
+			</div>
+
+		</div> <!-- tab -->
+	</span>	
+
+	<!-- TAB DEFUNCION -->
+	<span id="tabDefuncionTemplate" class="myHidden">
+
+		<div class="tab-pane fade active form-group tabDefuncion" role="tabpanel" data-myId="{{id}}"  id="tabDefuncion_{{id}}">			
+
+			<!-- Collapse Defuncion -->
+			<div class="col-xs-12">
+
+				<div class="well fieldsCollapse" >
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="defuncionTestigo_{{id}}">Testigo(s)</label>
+						<div class="col-xs-8">
+							<input type="text" class="form-control exampleUpdater" id="defuncionTestigo_{{id}}" name="defuncionTestigo_{{id}}">
+						</div>	
+					</div>
+
+					<div class="form-group col-xs-6">
+						<label class="col-xs-4 control-label" for="defuncionNumReg_{{id}}">NumReg(s)</label>
+						<div class="col-xs-4">
+							<input type="text" class="form-control exampleUpdater" id="defuncionNumReg_{{id}}" name="defuncionNumReg_{{id}}">
+						</div>	
+					</div>
+					<div class="form-group col-xs-6" style="max-height: none;">
+						<label class="col-xs-4 control-label" for="defuncionComentario_{{id}}">Comentario</label>
+						<div class="col-xs-8" style=" display:table-cell; vertical-align:middle; line-height: 200%;">
+							<textarea class="form-control exampleUpdater" id="defuncionComentario_{{id}}" name="defuncionComentario_{{id}}" rows="3"></textarea>
+						</div>	
+					</div>
+					<div class="col-sm-offset-2 col-sm-10 formCollapseButton">
+						<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Limpiar</button>
+					</div>
+				</div>
+
+			</div>
+		</div> <!-- tab -->
+	</span>
+	<!-- OTROS (TEMPORAL) -->
+	<span id="componentTEMPORALTemplate" class="myHidden">
+		
+	</span>
+	
+	<script type="text/javascript">
+	/*
+
+		var base_url_services = '<?php //echo BASE_URL_SERVICES;?>';
+		
+		$( document ).ready(function() {
+			
+			$('[name="genero"]:checked').prop('checked', false);
+			
+			$('[name="genero"]:checked').first().parent().removeClass("active");
+			
+			
+		});
+		*/
+	</script>	
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/form.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/formFill.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/formAnimations.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/formHelpers.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/formFromJson.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/formToJson.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/createElement.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/createComponent.js"></script>
+	<script type="text/javascript"
+		src="<?php echo base_url();?>resources/scripts/app/createField.js"></script>
+
+	</body>
+</html>
