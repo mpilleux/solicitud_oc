@@ -20,23 +20,23 @@
 			</div>
 			
 			<div class="input-field col s6">
-			  <input id="proveedor" name="proveedor" type="text" class="validate" required>
+			  <input id="proveedor" name="proveedor" type="text" class="validate required" required>
 			  <label for="proveedor">Proveedor</label>
 			</div>
 
 
 			<div class="input-field col s6">
-			  <input id="monto" name="monto" type="number" class="validate" required>
+			  <input id="monto" name="monto" type="number" class="validate required" required>
 			  <label for="monto">Monto [$]</label>
 			</div>
 			
 			<div class="input-field col s6">
-			  <input type="date" class="datepicker" id="fecha_entrega" name="fecha_entrega" required>
+			  <input type="date" class="validate datepicker required" id="fecha_entrega" name="fecha_entrega required" required>
 			   <label for="fecha_entrega">Fecha de entrega</label>
 			</div>
 
 			<div class="input-field col s12">
-			  <textarea id="descripcion" name="descripcion" class="materialize-textarea" data-length="220" required></textarea>
+			  <textarea id="descripcion" name="descripcion" class="validate materialize-textarea required" data-length="220" required></textarea>
 			  <label for="descripcion">Descripción</label>
 			</div>
 			<div class="input-field col s12">
@@ -54,7 +54,7 @@
 		  <p id="modal_response"></p>
 		</div>
 		<div class="modal-footer">
-		  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+		  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onClick="location.reload();">Cerrar</a>
 		</div>
 	  </div>
 		
@@ -69,13 +69,43 @@
 		selectYears: 15 // Creates a dropdown of 15 years to control year
 	  });
 	   $('select').material_select();
-  });
+	   
+	 });
+	function validateRequired(){
+	
+		var $val=0;
+
+		//check text fields
+		$(".required").each(function(){
+			
+			if (!$(this).val() || ($(this).val())== ""){
+				  $(this).addClass("invalid");
+				  $val = 1
+				  console.log($(this));
+			}
+			else{
+				$(this).removeClass("invalid");
+			}
+		  
+		});
+		if(!$("#centro_costo").val() || $("#centro_costo").val()==""){
+			 $(this).addClass("invalid");
+				  $val = 1
+				  console.log($(this));
+		}
+		
+		if ($val > 0) {
+			alert('Por favor ingrese todos los datos.');
+			return false;
+		}  
+	   return true;
+	}
   
 	function objectifyForm(formArray) {//serialize data function
 
 		var returnArray = {};
 		for (var i = 0; i < formArray.length; i++){
-		returnArray[formArray[i]['name']] = formArray[i]['value'];
+			returnArray[formArray[i]['name']] = formArray[i]['value'];
 		}
 		return returnArray;
 	}
@@ -97,7 +127,8 @@
 			}
 		}
 		
-		postAPI('<?php echo base_url();?>index.php/main_controller/postOC',process, objectifyForm($('#formulario_oc').serializeArray()));
+		if(validateRequired())
+			postAPI('<?php echo base_url();?>index.php/main_controller/postOC',process, objectifyForm($('#formulario_oc').serializeArray()));
 	}
 	
 	$(document).ready(function(){
