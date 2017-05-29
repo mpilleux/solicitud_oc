@@ -13,6 +13,9 @@ class Main_controller extends CI_Controller {
 
 	}	
 	
+	protected function getJSON($array, $key){
+		return ($array && isset($array[$key])) ? $array[$key] : null;
+	}
 	
 	public function postOC(){
 		header('Content-Type: application/json');

@@ -25,7 +25,7 @@
 			</div>
 
 
-			 <div class="input-field col s6">
+			<div class="input-field col s6">
 			  <input id="monto" name="monto" type="number" class="validate" required>
 			  <label for="monto">Monto [$]</label>
 			</div>
