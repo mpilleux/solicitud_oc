@@ -1,13 +1,11 @@
 <?php
 class Orden_compra_model extends CI_Model {
 
-	private $db;
-
 	function __construct(){
 		
 		// Call the Model constructor
 		parent::__construct();
-		$this->db = $this->load->database();
+		$this->load->database();
 	}
 
 
