@@ -25,6 +25,7 @@ class Main_controller extends CI_Controller {
 		
 		$input_json = json_decode(trim(file_get_contents('php://input')), true);
 		
+		
 		$proveedor 			= $this->getJSON($input_json, 'proveedor');
 		$descripcion 		= $this->getJSON($input_json, 'descripcion');
 		$fecha_entrega 		= $this->getJSON($input_json, 'fecha_entrega');
