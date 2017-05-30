@@ -31,7 +31,7 @@
 			</div>
 			
 			<div class="input-field col s6">
-			  <input type="date" class="validate datepicker required" id="fecha_entrega" name="fecha_entrega" required>
+			  <input type="date" class=" datepicker required" id="fecha_entrega" name="fecha_entrega" required>
 			   <label for="fecha_entrega">Fecha de entrega</label>
 			</div>
 
